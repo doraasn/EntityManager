@@ -6,7 +6,6 @@
   <title>实体类管理</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-  <link rel="stylesheet" href="CodeGenerator.css">
   <style>
     textarea#jsonInput:focus {
       border-color: var(--primary-color);
@@ -3546,7 +3545,36 @@ public AjaxResult page(
     function generateCode() {
       // 让所有表格输入框自动失焦
       document.querySelectorAll('#configTableContainer input').forEach(input => input.blur());
+      // 如果当前是新配置，强制重置模板为默认，并清除localStorage模板
+      const header = document.querySelector('#mainConfigSelector .config-select-header');
+      if (header && header.textContent === '新配置') {
+        templateCache = { ...defaultTemplates };
+        localStorage.removeItem('codeGeneratorTemplates');
+      }
       syncConfigTableToJson();
+
+      // 先判断是否有实体
+      if (!configTableData.length) {
+        showToast('请先添加实体类。', 'error');
+        return;
+      }
+
+      // 校验表格数据是否合法
+      for (let i = 0; i < configTableData.length; i++) {
+        const entity = configTableData[i];
+        if (!entity.name || !entity.package) {
+          showToast(`第${i + 1}个实体的名称或包名不能为空。`, 'error');
+          return;
+        }
+        for (let j = 0; j < entity.fields.length; j++) {
+          const field = entity.fields[j];
+          if (!field.name) {
+            showToast(`实体"${entity.name}"的第${j + 1}个字段名不能为空。`, 'error');
+            return;
+          }
+        }
+      }
+
       const btn = document.querySelector('.generate-btn');
       let input = document.getElementById('jsonInput').value;
       let config;
@@ -3555,9 +3583,9 @@ public AjaxResult page(
         config = JSON.parse(input);
         updateGenerateButton(null);
       } catch (e) {
-        let error = 'JSON 解析失败，请检查格式！';
+        let error = 'JSON 解析失败，请检查格式。';
         if (input == null || input == '') {
-          error = 'JSON 不能为空！';
+          error = 'JSON 不能为空。';
         }
         updateGenerateButton(error);
         return;
@@ -3629,7 +3657,7 @@ public AjaxResult page(
     function showSaveConfigModal() {
       const config = document.getElementById('jsonInput').value.trim();
       if (!config) {
-        showToast('请先输入配置内容', 'warning');
+        showToast('请先输入配置内容。', 'warning');
         return;
       }
       try {
@@ -3647,7 +3675,7 @@ public AjaxResult page(
           openModal('saveConfigModal');
         }
       } catch (e) {
-        showToast('配置格式不正确，请检查JSON格式', 'error');
+        showToast('配置格式不正确，请检查 JSON 格式。', 'error');
       }
     }
 
@@ -3656,7 +3684,7 @@ public AjaxResult page(
         // 从输入框获取配置名
         projectName = document.getElementById('projectName').value.trim();
         if (!projectName) {
-          showToast('请输入配置名称', 'error');
+          showToast('请输入配置名称。', 'error');
           return;
         }
       }
@@ -3780,7 +3808,7 @@ public AjaxResult page(
 
     function loadConfig() {
       if (!selectedProject) {
-        showToast('请选择配置', 'warning');
+        showToast('请选择配置。', 'warning');
         return;
       }
 
@@ -3808,12 +3836,12 @@ public AjaxResult page(
           closeModal('loadConfigModal');
           // 更新配置区域标题
           document.querySelector('.section-title').textContent = `${selectedProject}`;
-          showToast('配置已恢复');
+          showToast('配置已恢复。', 'success');
         } catch (e) {
-          showToast('配置格式不正确，请检查', 'error');
+          showToast('配置格式不正确，请检查。', 'error');
         }
       } else {
-        showToast('未找到有效的配置', 'warning');
+        showToast('未找到有效的配置。', 'warning');
       }
     }
 
@@ -4015,7 +4043,7 @@ private final I\${entityName}Service \${varName}Service;
         // 检查是否有配置内容
         const config = document.getElementById('jsonInput').value.trim();
         if (!config) {
-          showToast('请先输入配置内容', 'warning');
+          showToast('请先输入配置内容。', 'warning');
           return;
         }
         try {
@@ -4088,7 +4116,7 @@ private final I\${entityName}Service \${varName}Service;
         // 检查是否有配置内容
         const config = document.getElementById('jsonInput').value.trim();
         if (!config) {
-          showToast('请先输入配置内容', 'warning');
+          showToast('请先输入配置内容。', 'warning');
           return;
         }
         try {
@@ -4412,13 +4440,15 @@ private final I\${entityName}Service \${varName}Service;
                 ...defaultTemplates,
                 ...projectData.templates
               };
+              localStorage.setItem('codeGeneratorTemplates', JSON.stringify(templateCache));
             } else {
-              templateCache = {
-                ...defaultTemplates
-              };
+              templateCache = { ...defaultTemplates };
+              localStorage.setItem('codeGeneratorTemplates', JSON.stringify(templateCache));
             }
             showToast('配置已切换');
             jsonToConfigTable(projectData.config);
+            // 切换配置后自动生成代码
+            setTimeout(() => { generateCode(); }, 0);
           }
         }, () => {
           delete projects[name];
