@@ -2716,6 +2716,12 @@
       --dropdown-arrow-hover: var(--primary-color);
       --button-hover-lift: -1px;
     }
+
+    /* 新增样式 */
+    .input-error {
+      border-color: #dc2626 !important;
+      box-shadow: 0 0 0 2px rgba(220, 38, 38, .15) !important;
+    }
   </style>
 </head>
 
@@ -3030,6 +3036,18 @@
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeModal('importJsonModal')">取消</button>
         <button class="btn-save" onclick="importJsonFromText()">导入</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 删除配置确认弹窗 -->
+  <div id="deleteConfigModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">删除配置</div>
+      <div class="modal-body" id="deleteConfigModalBody">确定要删除配置吗？</div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('deleteConfigModal')">取消</button>
+        <button class="btn-danger" id="deleteConfigModalConfirmBtn">删除</button>
       </div>
     </div>
   </div>
@@ -3553,6 +3571,12 @@ public AjaxResult page(
       }
       syncConfigTableToJson();
 
+      // 先移除所有错误高亮
+      document.querySelectorAll('.field-comment-input, .entity-name-input').forEach(input => {
+        input.classList.remove('input-error');
+        input.style.borderColor = '';
+      });
+
       // 先判断是否有实体
       if (!configTableData.length) {
         showToast('请先添加实体类。', 'error');
@@ -3562,13 +3586,31 @@ public AjaxResult page(
       // 校验表格数据是否合法
       for (let i = 0; i < configTableData.length; i++) {
         const entity = configTableData[i];
+        // 找到当前实体的表头输入框
+        const entityCard = document.querySelectorAll('.entity-table-card')[i];
+        const nameInput = entityCard ? entityCard.querySelector('input.field-comment-input') : null;
+        const pkgInput = entityCard ? entityCard.querySelectorAll('input.field-comment-input')[1] : null;
         if (!entity.name || !entity.package) {
+          if (nameInput && !entity.name) {
+            nameInput.classList.add('input-error');
+            nameInput.style.borderColor = '#dc2626';
+          }
+          if (pkgInput && !entity.package) {
+            pkgInput.classList.add('input-error');
+            pkgInput.style.borderColor = '#dc2626';
+          }
           showToast(`第${i + 1}个实体的名称或包名不能为空。`, 'error');
           return;
         }
         for (let j = 0; j < entity.fields.length; j++) {
           const field = entity.fields[j];
+          // 精确找到当前字段名输入框（只在tbody数据行里找）
+          const fieldNameInput = document.querySelector(`.field-name-input[data-entity-idx="${i}"][data-field-idx="${j}"]`);
           if (!field.name) {
+            if (fieldNameInput) {
+              fieldNameInput.classList.add('input-error');
+              fieldNameInput.style.borderColor = '#dc2626';
+            }
             showToast(`实体"${entity.name}"的第${j + 1}个字段名不能为空。`, 'error');
             return;
           }
@@ -3690,6 +3732,11 @@ public AjaxResult page(
       }
       const config = document.getElementById('jsonInput').value.trim();
       const projects = JSON.parse(localStorage.getItem('codeGeneratorProjects') || '{}');
+      // 校验配置名是否已存在
+      if (projects[projectName]) {
+        showToast('配置名已存在，请更换名称。', 'error');
+        return;
+      }
       // 保存配置和模板
       projects[projectName] = {
         config: config,
@@ -4292,29 +4339,17 @@ private final I\${entityName}Service \${varName}Service;
           subGroup.className = 'nav-subgroup';
 
           const categories = [{
-            name: 'Entity',
+            name: 'Entity/Controller',
             pattern: f => !f.name.includes('VO') && !f.name.includes('Service') && !f.name.includes(
               'Controller') && !f.name.includes('Mapper')
           },
           {
-            name: 'VO',
+            name: 'VO/Mapper',
             pattern: f => f.name.includes('VO')
           },
           {
-            name: 'Controller',
-            pattern: f => f.name.includes('Controller')
-          },
-          {
-            name: 'Service',
+            name: 'Service/Impl',
             pattern: f => f.name.includes('Service') && !f.name.includes('Impl')
-          },
-          {
-            name: 'ServiceImpl',
-            pattern: f => f.name.includes('ServiceImpl')
-          },
-          {
-            name: 'Mapper',
-            pattern: f => f.name.includes('Mapper')
           }
           ];
 
@@ -4447,6 +4482,9 @@ private final I\${entityName}Service \${varName}Service;
             }
             showToast('配置已切换');
             jsonToConfigTable(projectData.config);
+            // 切换配置时先清空生成代码面板
+            document.getElementById('result').innerHTML = '';
+            floatingNav.style.display = 'none';
             // 切换配置后自动生成代码
             setTimeout(() => { generateCode(); }, 0);
           }
@@ -4660,20 +4698,44 @@ private final I\${entityName}Service \${varName}Service;
         leftDiv.style = 'display:flex;align-items:center;gap:0.5rem;';
         // 实体名输入
         const nameInput = document.createElement('input');
-        nameInput.className = 'field-comment-input';
+        nameInput.className = 'field-comment-input entity-name-input';
         nameInput.value = entity.name;
-        nameInput.placeholder = '实体名称';
+        nameInput.placeholder = "实体名";
         nameInput.onchange = function () {
           updateEntityName(entityIdx, this.value);
+        };
+        nameInput.onblur = function () {
+          syncConfigTableToJson();
+          // 实体名失焦校验
+          if (!this.value) {
+            this.classList.add('input-error');
+            this.style.borderColor = '#dc2626';
+            showToast('实体名称不能为空。', 'error');
+          } else {
+            this.classList.remove('input-error');
+            this.style.borderColor = '';
+          }
         };
         leftDiv.appendChild(nameInput);
         // 包名输入
         const pkgInput = document.createElement('input');
-        pkgInput.className = 'field-comment-input';
+        pkgInput.className = 'field-comment-input entity-package-input';
         pkgInput.value = entity.package;
-        pkgInput.placeholder = '包名';
+        pkgInput.placeholder = "包名";
         pkgInput.onchange = function () {
           updateEntityPackage(entityIdx, this.value);
+        };
+        pkgInput.onblur = function () {
+          syncConfigTableToJson();
+          // 包名失焦校验
+          if (!this.value) {
+            this.classList.add('input-error');
+            this.style.borderColor = '#dc2626';
+            showToast('包名不能为空。', 'error');
+          } else {
+            this.classList.remove('input-error');
+            this.style.borderColor = '';
+          }
         };
         leftDiv.appendChild(pkgInput);
         // 数据库类型下拉
@@ -5020,6 +5082,7 @@ private final I\${entityName}Service \${varName}Service;
       const entity = configTableData[entityIdx];
       const field = entity.fields[fieldIdx];
       const tr = document.createElement('tr');
+      tr.setAttribute('data-field-idx', fieldIdx);
       // 序号
       const tdIndex = document.createElement('td');
       tdIndex.style.textAlign = 'center';
@@ -5030,10 +5093,24 @@ private final I\${entityName}Service \${varName}Service;
       // 字段名
       const tdName = document.createElement('td');
       const nameInput = document.createElement('input');
-      nameInput.className = 'field-comment-input';
+      nameInput.className = 'field-comment-input field-name-input';
       nameInput.value = field.name;
+      nameInput.setAttribute('data-entity-idx', entityIdx);
+      nameInput.setAttribute('data-field-idx', fieldIdx);
       nameInput.onchange = function () {
         updateField(entityIdx, fieldIdx, 'name', this.value);
+      };
+      nameInput.onblur = function () {
+        syncConfigTableToJson();
+        // 字段名失焦校验
+        if (!this.value) {
+          this.classList.add('input-error');
+          this.style.borderColor = '#dc2626';
+          showToast('字段名不能为空。', 'error');
+        } else {
+          this.classList.remove('input-error');
+          this.style.borderColor = '';
+        }
       };
       tdName.appendChild(nameInput);
       tr.appendChild(tdName);
@@ -5391,27 +5468,36 @@ private final I\${entityName}Service \${varName}Service;
     });
 
     // 删除当前配置
+    let configToDelete = '';
     function deleteCurrentConfig() {
       const header = document.querySelector('#mainConfigSelector .config-select-header');
       const currentName = header ? header.textContent : '';
       if (!currentName || currentName === '新配置') {
-        showToast('当前无可删除的配置', 'warning');
+        showToast('当前无可删除的配置。', 'warning');
         return;
       }
-      if (!confirm(`确定要删除配置"${currentName}"吗？`)) return;
+      configToDelete = currentName;
+      document.getElementById('deleteConfigModalBody').textContent = `确定要删除配置"${currentName}"吗？`;
+      openModal('deleteConfigModal');
+    }
+    document.getElementById('deleteConfigModalConfirmBtn').onclick = function () {
+      if (!configToDelete) return;
       const projects = JSON.parse(localStorage.getItem('codeGeneratorProjects') || '{}');
-      if (projects[currentName]) {
-        delete projects[currentName];
+      if (projects[configToDelete]) {
+        delete projects[configToDelete];
         localStorage.setItem('codeGeneratorProjects', JSON.stringify(projects));
-        showToast(`已删除配置：${currentName}`);
+        showToast(`已删除配置：${configToDelete}。`);
         // 切换到新配置
-        header.textContent = '新配置';
+        const header = document.querySelector('#mainConfigSelector .config-select-header');
+        if (header) header.textContent = '新配置';
         document.getElementById('jsonInput').value = '';
         document.getElementById('result').innerHTML = '';
         document.getElementById('floatingNav').style.display = 'none';
         renderMainConfigSelector();
       }
-    }
+      closeModal('deleteConfigModal');
+      configToDelete = '';
+    };
 
     // 公共按钮组件（升级：支持tooltip和主题色）
     function createButton({
