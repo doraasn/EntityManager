@@ -2733,48 +2733,7 @@
         <div class="section-header">
           <div class="config-selector" id="mainConfigSelector" style="min-width:100px;"></div>
           <div class="button-groups">
-            <!-- 导入、导出、示例一组 -->
-            <div class="button-group">
-              <div class="tooltip-container">
-                <button class="btn-white" onclick="showImportJsonModal()">导入</button>
-                <div class="tooltip tooltip-top">导入JSON配置（快捷键：Ctrl + I）</div>
-              </div>
-              <div class="tooltip-container">
-                <button class="btn-white" onclick="copyJsonToClipboard()">导出</button>
-                <div class="tooltip tooltip-top">复制JSON配置到剪贴板（快捷键：Ctrl + E）</div>
-              </div>
-              <div class="tooltip-container">
-                <button class="btn-white" onclick="generateExampleTable()">示例</button>
-                <div class="tooltip tooltip-top">点击生成示例配置表格</div>
-              </div>
-            </div>
-            <!-- 模板、说明一组 -->
-            <div class="button-group">
-              <div class="tooltip-container">
-                <button class="btn-white" onclick="showTemplateModal()">模板</button>
-                <div class="tooltip tooltip-top">查看和修改代码生成模板（快捷键：Ctrl + T）</div>
-              </div>
-              <div class="tooltip-container">
-                <button class="btn-white" onclick="showInstructionModal()">说明</button>
-                <div class="tooltip tooltip-top">查看使用说明（快捷键：Ctrl + H）</div>
-              </div>
-            </div>
-            <!-- 保存、生成、删除一组 -->
-            <div class="button-group">
-              <div class="tooltip-container">
-                <button class="btn-danger" onclick="deleteCurrentConfig()">删除</button>
-                <div class="tooltip tooltip-top">删除当前配置（快捷键：Ctrl + D）</div>
-              </div>
-              <div class="tooltip-container">
-                <button class="btn-save" onclick="showSaveConfigModal()">保存</button>
-                <div class="tooltip tooltip-top">保存当前配置和模板（快捷键：Ctrl + S）</div>
-              </div>
-              <div class="tooltip-container">
-                <button class="generate-btn" onclick="generateCode()">生成</button>
-                <div class="tooltip tooltip-top">根据配置生成代码（快捷键：Ctrl + Enter）</div>
-                <div class="tooltip tooltip-bottom tooltip-error"></div>
-              </div>
-            </div>
+            <!-- 顶部按钮区 -->
           </div>
         </div>
         <div id="configTableContainer" style="margin-top:1.5rem;"></div>
@@ -5592,13 +5551,13 @@ private final I\${entityName}Service \${varName}Service;
         text: '导入',
         type: 'white',
         onClick: showImportJsonModal,
-        tooltip: '导入JSON配置（快捷键：Ctrl + I）'
+        tooltip: '导入JSON配置（Ctrl + I）'
       }));
       group1.appendChild(createButton({
         text: '导出',
         type: 'white',
         onClick: copyJsonToClipboard,
-        tooltip: '复制JSON配置到剪贴板（快捷键：Ctrl + E）'
+        tooltip: '复制JSON配置到剪贴板（Ctrl + E）'
       }));
       // 移除"示例"按钮
       // group1.appendChild(createButton({
@@ -5614,13 +5573,13 @@ private final I\${entityName}Service \${varName}Service;
         text: '模板',
         type: 'white',
         onClick: showTemplateModal,
-        tooltip: '查看和修改代码生成模板（快捷键：Ctrl + T）'
+        tooltip: '查看和修改代码生成模板（Ctrl + T）'
       }));
       group2.appendChild(createButton({
         text: '说明',
         type: 'white',
         onClick: showInstructionModal,
-        tooltip: '查看使用说明（快捷键：Ctrl + H）'
+        tooltip: '查看使用说明（Ctrl + H）'
       }));
 
       const group3 = document.createElement('div');
@@ -5629,20 +5588,20 @@ private final I\${entityName}Service \${varName}Service;
         text: '删除',
         type: 'danger',
         onClick: deleteCurrentConfig,
-        tooltip: '删除当前配置（快捷键：Ctrl + D）'
+        tooltip: '删除当前配置（Ctrl + D）'
       }));
       group3.appendChild(createButton({
         text: '保存',
         type: 'save',
         onClick: showSaveConfigModal,
-        tooltip: '保存当前配置和模板（快捷键：Ctrl + S）'
+        tooltip: '保存当前配置和模板（Ctrl + S）'
       }));
       group3.appendChild(createButton({
         text: '生成',
         type: 'primary',
         onClick: generateCode,
         className: 'generate-btn',
-        tooltip: '根据配置生成代码（快捷键：Ctrl + Enter）'
+        tooltip: '生成代码（Ctrl + Enter）'
       }));
 
       const buttonGroups = document.querySelector('.button-groups');
