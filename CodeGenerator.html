@@ -3089,8 +3089,12 @@
           case 'long':
             return 'NUMBER(19)';
           case 'double':
-          case 'bigdecimal':
-            return 'NUMBER(20,4)';
+          case 'bigdecimal': {
+            let [precision, scale] = (lengthParam || '').split(',');
+            precision = precision === undefined || precision === '' ? '20' : precision;
+            scale = scale === undefined || scale === '' ? '0' : scale;
+            return `NUMBER(${precision},${scale})`;
+          }
           case 'date':
           case 'localdatetime':
             return 'DATE';
@@ -3108,9 +3112,12 @@
           case 'long':
             return 'BIGINT';
           case 'double':
-            return 'DOUBLE';
-          case 'bigdecimal':
-            return 'DECIMAL(20,4)';
+          case 'bigdecimal': {
+            let [precision, scale] = (lengthParam || '').split(',');
+            precision = precision === undefined || precision === '' ? '20' : precision;
+            scale = scale === undefined || scale === '' ? '0' : scale;
+            return `DECIMAL(${precision},${scale})`;
+          }
           case 'date':
           case 'localdatetime':
             return 'DATETIME';
@@ -3537,6 +3544,9 @@ public AjaxResult page(
     }
 
     function generateCode() {
+      // 让所有表格输入框自动失焦
+      document.querySelectorAll('#configTableContainer input').forEach(input => input.blur());
+      syncConfigTableToJson();
       const btn = document.querySelector('.generate-btn');
       let input = document.getElementById('jsonInput').value;
       let config;
@@ -3879,7 +3889,7 @@ import java.math.BigDecimal;
 @Data
 @ApiModel(value = "\${entityName}VO对象", description = "\${entityName}展示对象")
 public class \${entityName}VO {
-// ... 字段定义 ...
+    // ... 字段定义 ...
 }`,
       service: `package \${basePackage}.service;
 
@@ -3931,7 +3941,7 @@ public class \${entityName}Controller {
 
 private final I\${entityName}Service \${varName}Service;
 
-// ... CRUD方法 ...
+    // ... CRUD方法 ...
 }`,
       sql: `-- 创建\${entityName}表\nCREATE TABLE \${tableName} (\n    -- ... 其他字段 ...\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='\${entityName}表';`
     };
