@@ -95,9 +95,9 @@
     #mainConfigSelector {
       display: inline-block;
       position: relative;
-      width: 400px;
-      min-width: 400px;
-      max-width: 400px;
+      width: 240px;
+      min-width: 240px;
+      max-width: 240px;
     }
 
     #mainConfigSelector .config-select-options.show {
@@ -112,9 +112,9 @@
       z-index: 101;
       top: calc(100% + 4px);
       left: 0;
-      width: 400px;
-      min-width: 400px;
-      max-width: 400px;
+      width: 240px;
+      min-width: 240px;
+      max-width: 240px;
       margin: 0;
       padding: 0 !important;
       background: var(--dropdown-bg);
@@ -145,7 +145,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 400px;
+      width: 240px;
       height: 36px;
       padding: .5rem 1rem;
       border: 1px solid var(--dropdown-border);
@@ -181,7 +181,7 @@
     #mainConfigSelector .config-option {
       display: flex;
       align-items: center;
-      width: 400px;
+      width: 240px;
       min-height: 32px;
       padding: .5rem 1rem;
       border: none;
@@ -782,9 +782,10 @@
       flex-direction: column;
       position: fixed;
       z-index: 9999;
-      top: 1.5rem;
-      left: 1.5rem;
-      /* 改为左对齐 */
+      top: 5.5rem;
+      right: 2.5rem;
+      left: unset;
+      /* 改为右上对齐 */
       pointer-events: none;
 
       gap: .5rem;
@@ -1059,7 +1060,8 @@
 
     .nav-link:hover {
       background: var(--nav-bg-1);
-      transform: translateY(-1px);
+      color: var(--primary-color);
+      cursor: pointer !important;
     }
 
     .nav-link {
@@ -1070,6 +1072,7 @@
       font-weight: 500;
       white-space: nowrap;
       text-decoration: none;
+      cursor: pointer !important;
       transition: all var(--transition-fast);
       border-radius: 6px;
     }
@@ -2227,35 +2230,27 @@
     .button-groups {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
 
-      gap: 2rem;
-    }
-
-    .button-group.template-group {
-      border: 1px solid #f5d0fe;
-      background: #fdf4ff;
-    }
-
-    .button-group.main-group {
-      border: 1px solid #bbf7d0;
-      background: #f0fdf4;
-    }
-
-    .button-group.config-group {
-      border: 1px solid #bae6fd;
-      background: #f0f9ff;
+      gap: .5rem;
     }
 
     .button-group {
       display: flex;
       align-items: center;
-      padding: .5rem 0;
+      padding: 0;
       border: none;
       background: none;
-      border-radius: 0;
       box-shadow: none;
 
       gap: .5rem;
+    }
+
+    .btn-template,
+    .button-group .btn-template {
+      border: none !important;
+      background: #64748b !important;
+      color: #fff !important;
     }
 
     .btn-white:hover {
@@ -2281,14 +2276,6 @@
       background: #fff !important;
       color: var(--primary-color) !important;
       transition: all .2s !important;
-    }
-
-    .btn-template:hover {
-      background: var(--new-hover);
-    }
-
-    .btn-template {
-      background: var(--new-color);
     }
 
     .btn-secondary:hover {
@@ -2722,20 +2709,152 @@
       border-color: #dc2626 !important;
       box-shadow: 0 0 0 2px rgba(220, 38, 38, .15) !important;
     }
+
+    /* 右下角悬浮操作按钮组样式 */
+    .floating-action-group {
+      display: flex;
+      align-items: flex-end;
+      flex-direction: column;
+      position: fixed;
+      z-index: 9999;
+      right: 32px;
+      bottom: 32px;
+      pointer-events: none;
+
+      gap: 16px;
+    }
+
+    .floating-action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 0;
+      padding: 0 !important;
+      border: none;
+      /* background: rgba(255,255,255,0.18); */
+      background: rgba(189, 189, 189, .25);
+      color: white;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(206, 206, 206, .25);
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      /* box-shadow: none; */
+    }
+
+    .floating-action-btn svg {
+      display: block;
+      width: 23px !important;
+      min-width: 0;
+      height: 23px !important;
+      min-height: 0;
+      margin: 0 auto;
+      padding: 0;
+
+      stroke: #fff;
+      stroke-width: 2.8;
+    }
+
+    .floating-action-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .floating-action-btn.import:hover {
+      background: rgba(37, 99, 235, .8);
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .floating-action-btn.export:hover {
+      background: rgba(34, 197, 94, .8);
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .floating-action-btn.help:hover {
+      background: rgba(245, 158, 11, .8);
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .floating-action-btn.top:hover {
+      background: rgba(100, 116, 139, .8);
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .floating-action-btn[data-tooltip]:after {
+      content: attr(data-tooltip);
+      visibility: hidden;
+      position: absolute;
+      z-index: 10000;
+      bottom: 120%;
+      left: 50%;
+      padding: .4em 1em;
+      background: #2563eb;
+      color: #fff;
+      font-size: .78rem;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s, visibility .2s;
+      transform: translateX(-50%);
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+    }
+
+    .floating-action-btn:hover:after {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .floating-action-group {
+        align-items: flex-end;
+        flex-direction: column;
+        right: 8px;
+        bottom: 12px;
+
+        gap: 8px;
+      }
+
+      .floating-action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+      }
+
+      .floating-action-btn svg {
+        width: 26px;
+        height: 26px;
+
+        stroke-width: 2.8;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <div class="section-header"
+    style="display:flex;align-items:center;justify-content:space-between;gap:1.5rem;position:fixed;top:0;left:0;width:100vw;z-index:1999;background:white;border-radius:0 0 8px 8px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1);padding:.75rem 2rem;">
+    <div class="config-selector" id="mainConfigSelector" style="min-width:100px;"></div>
+    <div class="nav-left" id="navLeft"></div>
+    <div class="button-groups"></div>
+  </div>
   <div class="container">
     <div class="config-section"
-      style="display:block;max-width:none;width:100%;box-shadow:none;padding:0;background:transparent;">
-      <div class="input-section" style="width:100%;max-width:1800px;margin:0 auto;">
-        <div class="section-header">
-          <div class="config-selector" id="mainConfigSelector" style="min-width:100px;"></div>
-          <div class="button-groups">
-            <!-- 顶部按钮区 -->
-          </div>
-        </div>
+      style="display:block;max-width:none;width:100%;box-shadow:none;padding:0;background:transparent;overflow:visible;">
+      <div class="input-section" style="width:100%;max-width:1800px;margin:0 auto;overflow:visible;padding-top:40px;">
         <div id="configTableContainer" style="margin-top:1.5rem;"></div>
         <textarea id="jsonInput" style="display:none;"></textarea>
       </div>
@@ -2907,14 +3026,6 @@
       </div>
     </div>
     <div class="result-container">
-      <!-- 添加浮动导航 -->
-      <div class="floating-nav" id="floatingNav">
-        <ul class="nav-list" id="navList">
-          <div class="nav-left">
-            <!-- 其余导航内容 -->
-          </div>
-        </ul>
-      </div>
       <div id="result"></div>
     </div>
   </div>
@@ -2963,15 +3074,8 @@
     </div>
   </div>
 
-  <!-- 右下角返回顶部按钮 -->
-  <div id="fixedBackToTop" class="back-to-top-fixed tooltip-container">
-    <div class="back-to-top">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path d="M12 7v10m0-10l-4 4m4-4l4 4" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </div>
-    <div class="tooltip tooltip-top">返回顶部</div>
-  </div>
+  <!-- 右下角悬浮操作按钮组（横向排列，含返回顶部） -->
+  <div id="floatingActionGroup" class="floating-action-group"></div>
 
   <!-- 说明弹窗 -->
   <div id="instructionModal" class="modal">
@@ -3017,8 +3121,7 @@
       hljs.configure({
         languages: ['java', 'sql', 'json']
       });
-      // 隐藏导航栏
-      document.getElementById('floatingNav').style.display = 'none';
+      // document.getElementById('floatingNav').style.display = 'none'; // 已无此元素，彻底移除
     };
 
     function camelToUnderline(str) {
@@ -3634,8 +3737,7 @@ public AjaxResult page(
           hljs.highlightElement(block);
         });
 
-        // 更新导航
-        updateNavigation();
+        renderNavLeft();
 
         // 显示生成成功提示
         showToast('代码生成成功！', 'success');
@@ -3646,7 +3748,9 @@ public AjaxResult page(
     }
 
     function scrollToElement(element) {
-      const navHeight = document.querySelector('.floating-nav').offsetHeight;
+      // 获取顶部栏高度，优先.section-header
+      const nav = document.querySelector('.section-header');
+      const navHeight = nav ? nav.offsetHeight : 0;
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
       window.scrollTo({
         top: elementPosition - navHeight - 20,
@@ -4198,22 +4302,6 @@ private final I\${entityName}Service \${varName}Service;
       const navLeft = document.createElement('div');
       navLeft.className = 'nav-left';
 
-      // 添加返回顶部按钮到左侧最前面
-      const backToTop = document.createElement('div');
-      backToTop.className = 'back-to-top';
-      backToTop.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path d="M12 7v10m0-10l-4 4m4-4l4 4" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
-      backToTop.onclick = () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      };
-      const tooltip = document.createElement('div');
-      tooltip.className = 'tooltip tooltip-top';
-      tooltip.textContent = '返回顶部';
-
       // 创建实体选择器
       const entitySelector = document.createElement('div');
       entitySelector.className = 'entity-selector';
@@ -4287,68 +4375,52 @@ private final I\${entityName}Service \${varName}Service;
 
         // 处理 Java 文件
         if (fileTypes.has('java')) {
-          const javaGroup = document.createElement('div');
-          javaGroup.className = 'nav-java-group';
-
-          const javaLink = document.createElement('a');
-          javaLink.className = 'nav-link type-java';
-          javaLink.textContent = 'Java';
-
-          const subGroup = document.createElement('div');
-          subGroup.className = 'nav-subgroup';
-
-          const categories = [{
-            name: 'Entity/Controller',
-            pattern: f => !f.name.includes('VO') && !f.name.includes('Service') && !f.name.includes(
-              'Controller') && !f.name.includes('Mapper')
-          },
-          {
-            name: 'VO/Mapper',
-            pattern: f => f.name.includes('VO')
-          },
-          {
-            name: 'Service/Impl',
-            pattern: f => f.name.includes('Service') && !f.name.includes('Impl')
-          }
+          const categories = [
+            {
+              name: 'Entity/Controller',
+              files: [`${title}.java`, `${title}Controller.java`]
+            },
+            {
+              name: 'VO/Mapper',
+              files: [`${title}VO.java`, `${title}Mapper.java`]
+            },
+            {
+              name: 'Service/Impl',
+              files: [`I${title}Service.java`, `${title}ServiceImpl.java`]
+            }
           ];
 
           const javaFiles = fileTypes.get('java');
           categories.forEach(category => {
-            const files = javaFiles.filter(category.pattern);
-            if (files.length > 0) {
-              const link = document.createElement('a');
-              link.href = `#${entity.id}-${files[0].name}`;
-              link.className = 'nav-sublink';
-              link.textContent = category.name;
-              link.onclick = (e) => {
-                e.preventDefault();
-                scrollToElement(files[0].element);
-              };
-              subGroup.appendChild(link);
+            for (const fname of category.files) {
+              const file = javaFiles.find(f => f.name === fname);
+              if (file) {
+                const link = document.createElement('a');
+                link.className = 'nav-link';
+                link.textContent = category.name;
+                link.onclick = (e) => {
+                  e.preventDefault();
+                  scrollToElement(file.element);
+                };
+                navGroup.appendChild(link);
+                break;
+              }
             }
           });
-
-          javaGroup.appendChild(javaLink);
-          javaGroup.appendChild(subGroup);
-          navGroup.appendChild(javaGroup);
         }
 
-        // 处理 SQL 和 JSON 文件，不包含在 Java 组内
-        ['sql', 'json'].forEach(type => {
-          if (fileTypes.has(type)) {
-            const files = fileTypes.get(type);
-            const typeLink = document.createElement('a');
-            typeLink.href = `#${entity.id}-${files[0].name}`;
-            typeLink.className = `nav-link type-${type.toLowerCase()}`;
-            typeLink.textContent = type.toUpperCase();
-            typeLink.onclick = (e) => {
-              e.preventDefault();
-              scrollToElement(files[0].element);
-            };
-            navGroup.appendChild(typeLink);
-          }
-        });
-
+        // 处理 SQL 文件
+        if (fileTypes.has('sql')) {
+          const files = fileTypes.get('sql');
+          const typeLink = document.createElement('a');
+          typeLink.className = 'nav-link';
+          typeLink.textContent = 'SQL/JSON';
+          typeLink.onclick = (e) => {
+            e.preventDefault();
+            scrollToElement(files[0].element);
+          };
+          navGroup.appendChild(typeLink);
+        }
         entityNavs.set(index.toString(), navGroup);
       });
 
@@ -4410,7 +4482,6 @@ private final I\${entityName}Service \${varName}Service;
         header.classList.remove('active');
         document.getElementById('jsonInput').value = '';
         document.getElementById('result').innerHTML = '';
-        document.getElementById('floatingNav').style.display = 'none';
         // 修复：切换到新配置时，重置模板缓存为默认模板
         templateCache = {
           ...defaultTemplates
@@ -4419,6 +4490,7 @@ private final I\${entityName}Service \${varName}Service;
         showToast('已清空配置');
         configTableData = [];
         renderConfigTable();
+        renderNavLeft();
       }));
       // 其它配置项
       Object.keys(projects).forEach(name => {
@@ -4443,9 +4515,9 @@ private final I\${entityName}Service \${varName}Service;
             jsonToConfigTable(projectData.config);
             // 切换配置时先清空生成代码面板
             document.getElementById('result').innerHTML = '';
-            floatingNav.style.display = 'none';
             // 切换配置后自动生成代码
             setTimeout(() => { generateCode(); }, 0);
+            renderNavLeft();
           }
         }, () => {
           delete projects[name];
@@ -4456,12 +4528,13 @@ private final I\${entityName}Service \${varName}Service;
             header.textContent = '新配置';
             document.getElementById('jsonInput').value = '';
             document.getElementById('result').innerHTML = '';
-            document.getElementById('floatingNav').style.display = 'none';
+            renderNavLeft();
           }
         }));
       });
       selector.appendChild(options);
       bindMainConfigDropdownEvents(selector, options);
+      renderNavLeft();
     }
 
     // 页面加载和每次保存/删除配置后都调用
@@ -4609,28 +4682,6 @@ private final I\${entityName}Service \${varName}Service;
         document.removeEventListener('click', docClick);
       });
     }
-
-    // 右下角返回顶部按钮逻辑
-    document.getElementById('fixedBackToTop').onclick = function () {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    };
-    // 滚动时显示/隐藏
-    window.addEventListener('scroll', function () {
-      const btn = document.getElementById('fixedBackToTop');
-      if (window.scrollY > 200) {
-        btn.style.opacity = '1';
-        btn.style.pointerEvents = 'auto';
-      } else {
-        btn.style.opacity = '0';
-        btn.style.pointerEvents = 'none';
-      }
-    });
-    // 初始隐藏
-    document.getElementById('fixedBackToTop').style.opacity = '0';
-    document.getElementById('fixedBackToTop').style.pointerEvents = 'none';
 
     // 配置表格数据结构
     let configTableData = [];
@@ -5359,6 +5410,7 @@ private final I\${entityName}Service \${varName}Service;
           };
         });
         renderConfigTable();
+        renderNavLeft();
       } catch (e) {
         showToast('JSON解析失败', 'error');
       }
@@ -5451,7 +5503,7 @@ private final I\${entityName}Service \${varName}Service;
         if (header) header.textContent = '新配置';
         document.getElementById('jsonInput').value = '';
         document.getElementById('result').innerHTML = '';
-        document.getElementById('floatingNav').style.display = 'none';
+        // 移除对floatingNav的display控制
         renderMainConfigSelector();
       }
       closeModal('deleteConfigModal');
@@ -5545,75 +5597,57 @@ private final I\${entityName}Service \${varName}Service;
 
     // 渲染顶部操作区按钮
     function renderTopButtons() {
-      const group1 = document.createElement('div');
-      group1.className = 'button-group';
-      group1.appendChild(createButton({
-        text: '导入',
-        type: 'white',
-        onClick: showImportJsonModal,
-        tooltip: '导入JSON配置（Ctrl + I）'
-      }));
-      group1.appendChild(createButton({
-        text: '导出',
-        type: 'white',
-        onClick: copyJsonToClipboard,
-        tooltip: '复制JSON配置到剪贴板（Ctrl + E）'
-      }));
-      // 移除"示例"按钮
-      // group1.appendChild(createButton({
-      //   text: '示例',
-      //   type: 'white',
-      //   onClick: generateExampleTable,
-      //   tooltip: '点击生成示例配置表格'
-      // }));
-
-      const group2 = document.createElement('div');
-      group2.className = 'button-group';
-      group2.appendChild(createButton({
+      // 顶部按钮全部平铺，无分组色块
+      const buttonGroups = document.querySelector('.button-groups');
+      buttonGroups.innerHTML = '';
+      buttonGroups.appendChild(createButton({
         text: '模板',
-        type: 'white',
+        className: 'btn-template',
         onClick: showTemplateModal,
-        tooltip: '查看和修改代码生成模板（Ctrl + T）'
+        tooltip: '查看和修改代码生成模板（Ctrl + T）',
+        tooltipPosition: 'bottom'
       }));
-      group2.appendChild(createButton({
-        text: '说明',
-        type: 'white',
-        onClick: showInstructionModal,
-        tooltip: '查看使用说明（Ctrl + H）'
-      }));
-
-      const group3 = document.createElement('div');
-      group3.className = 'button-group';
-      group3.appendChild(createButton({
+      buttonGroups.appendChild(createButton({
         text: '删除',
         type: 'danger',
         onClick: deleteCurrentConfig,
-        tooltip: '删除当前配置（Ctrl + D）'
+        tooltip: '删除当前配置（Ctrl + D）',
+        tooltipPosition: 'bottom'
       }));
-      group3.appendChild(createButton({
+      buttonGroups.appendChild(createButton({
         text: '保存',
         type: 'save',
         onClick: showSaveConfigModal,
-        tooltip: '保存当前配置和模板（Ctrl + S）'
+        tooltip: '保存当前配置和模板（Ctrl + S）',
+        tooltipPosition: 'bottom'
       }));
-      group3.appendChild(createButton({
+      buttonGroups.appendChild(createButton({
         text: '生成',
         type: 'primary',
         onClick: generateCode,
         className: 'generate-btn',
-        tooltip: '生成代码（Ctrl + Enter）'
+        tooltip: '生成代码（Ctrl + Enter）',
+        tooltipPosition: 'bottom'
       }));
-
-      const buttonGroups = document.querySelector('.button-groups');
-      buttonGroups.innerHTML = '';
-      buttonGroups.appendChild(group1);
-      buttonGroups.appendChild(group2);
-      buttonGroups.appendChild(group3);
+      // 说明按钮不再放在顶部栏，改为放到input-section下方
+      const descBelow = document.getElementById('desc-below-topbar');
+      if (descBelow) {
+        descBelow.innerHTML = '';
+        descBelow.appendChild(createButton({
+          text: '说明',
+          type: 'info',
+          onClick: showInstructionModal,
+          tooltip: '查看使用说明（Ctrl + H）',
+          tooltipPosition: 'bottom'
+        }));
+      }
     }
     // 页面初始化时渲染
     window.addEventListener('DOMContentLoaded', function () {
       renderTopButtons();
-
+      renderFloatingActionGroup();
+      renderNavLeft();
+      // 渲染右下角悬浮操作按钮组
       // 显示快捷键提示（仅在首次访问时）
       if (!localStorage.getItem('shortcutHintShown')) {
         setTimeout(() => {
@@ -5621,9 +5655,47 @@ private final I\${entityName}Service \${varName}Service;
           localStorage.setItem('shortcutHintShown', 'true');
         }, 2000);
       }
-
       // ...原有初始化代码...
     });
+    // 渲染右下角悬浮操作按钮组
+    function renderFloatingActionGroup() {
+      const group = document.getElementById('floatingActionGroup');
+      group.innerHTML = '';
+      const btns = [
+        {
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="19" width="20" height="2" rx="1" stroke-width="0" fill="currentColor"/><path d="M12 4v10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"/><path d="M7 11l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"/></svg>`,
+          onClick: showImportJsonModal,
+          tooltip: '导入',
+          key: 'import'
+        },
+        {
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="2" rx="1" stroke-width="0" fill="currentColor"/><path d="M12 20V10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"/><path d="M7 13l5-5 5 5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"/></svg>`,
+          onClick: copyJsonToClipboard,
+          tooltip: '导出',
+          key: 'export'
+        },
+        {
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="2.8"/><path d="M12 17h.01" stroke-linecap="round" stroke-width="2.8"/><path d="M12 13a2 2 0 1 0-2-2" stroke-linecap="round" stroke-width="2.8"/></svg>`,
+          onClick: showInstructionModal,
+          tooltip: '说明',
+          key: 'help'
+        },
+        {
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 19V5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"/><path d="M7 10l5-5 5 5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"/></svg>`,
+          onClick: () => { window.scrollTo({ top: 0, behavior: 'smooth' }); },
+          tooltip: '顶部',
+          key: 'top'
+        }
+      ];
+      btns.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = `floating-action-btn ${item.key}`;
+        btn.innerHTML = item.icon;
+        btn.onclick = item.onClick;
+        btn.setAttribute('data-tooltip', item.tooltip);
+        group.appendChild(btn);
+      });
+    }
 
     // 工具函数：关闭所有下拉弹层（放在JS区合适位置）
     function closeAllConfigDropdowns() {
@@ -5661,7 +5733,142 @@ private final I\${entityName}Service \${varName}Service;
       });
       renderConfigTable();
     }
+
+    // 新增顶部导航渲染函数，合并原updateNavigation和renderTopButtons
+    function renderNavLeft() {
+      const navLeft = document.getElementById('navLeft');
+      navLeft.innerHTML = '';
+      const entities = document.querySelectorAll('.entity-card');
+      // 新增：未生成代码时隐藏顶部导航按钮
+      if (entities.length === 0) {
+        navLeft.style.display = 'none';
+        return;
+      }
+      navLeft.style.display = 'flex';
+      // 创建实体选择器
+      const entitySelector = document.createElement('div');
+      entitySelector.className = 'entity-selector';
+      const selectHeader = document.createElement('div');
+      selectHeader.className = 'entity-select-header';
+      selectHeader.textContent = '选择实体';
+      const optionsContainer = document.createElement('div');
+      optionsContainer.className = 'entity-select-options';
+      // 存储所有实体的导航数据
+      const entityNavs = new Map();
+      entities.forEach((entity, index) => {
+        const title = entity.querySelector('.entity-title').textContent;
+        entity.id = `entity-${index}`;
+        // 添加选项
+        const option = document.createElement('div');
+        option.className = 'entity-option';
+        option.textContent = title;
+        option.dataset.value = index;
+        if (index === 0) {
+          option.classList.add('selected');
+          selectHeader.textContent = title;
+        }
+        option.onclick = function () {
+          optionsContainer.querySelectorAll('.entity-option').forEach(opt => {
+            opt.classList.remove('selected');
+          });
+          this.classList.add('selected');
+          selectHeader.textContent = this.textContent;
+          optionsContainer.classList.remove('show');
+          selectHeader.classList.remove('active');
+          entityNavs.forEach((nav, idx) => {
+            nav.style.display = idx === this.dataset.value ? 'flex' : 'none';
+          });
+          const selectedEntity = document.getElementById(`entity-${this.dataset.value}`);
+          if (selectedEntity) {
+            scrollToElement(selectedEntity);
+          }
+        };
+        optionsContainer.appendChild(option);
+        // 创建导航组
+        const navGroup = document.createElement('div');
+        navGroup.className = 'nav-group';
+        navGroup.style.display = 'none';
+        // 收集文件类型
+        const fileTypes = new Map();
+        entity.querySelectorAll('.file-block').forEach(block => {
+          const fileName = block.querySelector('.code-title').textContent;
+          const fileType = fileName.split('.').pop();
+          if (!fileTypes.has(fileType)) {
+            fileTypes.set(fileType, []);
+          }
+          fileTypes.get(fileType).push({
+            name: fileName,
+            element: block
+          });
+        });
+        // 处理 Java 文件
+        if (fileTypes.has('java')) {
+          const categories = [
+            { name: 'Entity/Controller', files: [`${title}.java`, `${title}Controller.java`] },
+            { name: 'VO/Mapper', files: [`${title}VO.java`, `${title}Mapper.java`] },
+            { name: 'Service/Impl', files: [`I${title}Service.java`, `${title}ServiceImpl.java`] }
+          ];
+          const javaFiles = fileTypes.get('java');
+          categories.forEach(category => {
+            for (const fname of category.files) {
+              const file = javaFiles.find(f => f.name === fname);
+              if (file) {
+                const link = document.createElement('a');
+                link.className = 'nav-link';
+                link.textContent = category.name;
+                link.onclick = (e) => {
+                  e.preventDefault();
+                  scrollToElement(file.element);
+                };
+                navGroup.appendChild(link);
+                break;
+              }
+            }
+          });
+        }
+        // 处理 SQL 文件
+        if (fileTypes.has('sql')) {
+          const files = fileTypes.get('sql');
+          const typeLink = document.createElement('a');
+          typeLink.className = 'nav-link';
+          typeLink.textContent = 'SQL/JSON';
+          typeLink.onclick = (e) => {
+            e.preventDefault();
+            scrollToElement(files[0].element);
+          };
+          navGroup.appendChild(typeLink);
+        }
+        entityNavs.set(index.toString(), navGroup);
+      });
+      entitySelector.appendChild(selectHeader);
+      entitySelector.appendChild(optionsContainer);
+      navLeft.appendChild(entitySelector);
+      entityNavs.forEach(nav => {
+        navLeft.appendChild(nav);
+      });
+      if (entityNavs.has('0')) {
+        entityNavs.get('0').style.display = 'flex';
+      }
+      selectHeader.onclick = function (e) {
+        e.stopPropagation();
+        if (optionsContainer.classList.contains('show')) {
+          optionsContainer.classList.remove('show');
+          selectHeader.classList.remove('active');
+        } else {
+          optionsContainer.classList.add('show');
+          selectHeader.classList.add('active');
+        }
+      };
+      document.addEventListener('click', function docClick(e) {
+        if (!e.target.closest('.entity-selector')) {
+          optionsContainer.classList.remove('show');
+          selectHeader.classList.remove('active');
+        }
+      });
+    }
   </script>
 </body>
+
+</html>
 
 </html>
